@@ -1,6 +1,6 @@
 # Roadmap
 
-- [x] Phase 1 — Project setup
+- [x] Phase 1 — Project setup ✅ Backend + frontend scaffolded, Docker'd, on GitHub
 - [ ] Phase 2 — NBA data ingestion
 - [ ] Phase 3 — Play-by-play parser
 - [ ] Phase 4 — Feature engineering
