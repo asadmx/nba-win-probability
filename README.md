@@ -19,10 +19,9 @@ TypeScript dashboard.
 
 Requires Docker Desktop.
 
-\`\`\`bash
+```bash
 docker compose up --build
-\`\`\`
-
+```
 - Backend: http://localhost:8000
 - Frontend: http://localhost:5173
 - API docs: http://localhost:8000/docs
