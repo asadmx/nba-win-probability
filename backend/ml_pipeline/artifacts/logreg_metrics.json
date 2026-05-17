@@ -1,0 +1,25 @@
+{
+  "model": "logreg",
+  "val_accuracy": 0.7337273944782597,
+  "val_log_loss": 0.49036950005405705,
+  "n_train": 481885,
+  "n_val": 341233,
+  "feature_columns": [
+    "score_margin",
+    "seconds_remaining_game",
+    "seconds_remaining_period",
+    "period",
+    "is_overtime",
+    "is_clutch",
+    "home_has_possession",
+    "home_fouls_period",
+    "away_fouls_period",
+    "home_in_bonus",
+    "away_in_bonus",
+    "momentum_5",
+    "recent_scoring_run",
+    "margin_x_logtime",
+    "margin_per_second_remaining",
+    "abs_margin"
+  ]
+}

@@ -14,12 +14,13 @@ node_modules/
 dist/
 .vite/
 
-# Data & ML artifacts (we'll regenerate these)
+# Data & ML artifacts (regenerable by re-running training scripts)
 backend/data/raw/
 backend/data/processed/
 backend/data/*.db
 backend/ml_pipeline/artifacts/*.pt
 backend/ml_pipeline/artifacts/*.pkl
+backend/ml_pipeline/artifacts/*.joblib
 
 # IDE
 .vscode/
