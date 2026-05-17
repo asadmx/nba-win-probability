@@ -1,39 +1,45 @@
 """FastAPI application entrypoint.
 
-This is the file uvicorn loads when the server starts.
-The `app` variable on line ~30 is what uvicorn looks for — that's why
-we run `uvicorn app.main:app` (module: app.main, variable: app).
+Wires together:
+  - Health, games, predict, models routes
+  - The PyTorch predictor (loaded once at startup, reused per request)
+  - CORS for the React frontend
 """
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import routes_health
+from app.api import routes_games, routes_health, routes_models, routes_predict
 from app.config import settings
+from app.ml.predictor import Predictor, set_predictor
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Code that runs on startup and shutdown.
 
-    Right now it just prints. Later, this is where we'll load the
-    trained PyTorch model into memory — once at startup, not per
-    request — so inference is fast.
+    On startup we load the trained model from disk and stash it in the
+    module-level singleton. Every API call reuses the same loaded model —
+    no per-request I/O.
     """
     print(f"🚀 Starting {settings.app_name} ({settings.environment})")
-    yield  # Server runs here. Anything after yield runs at shutdown.
+    try:
+        predictor = Predictor.load_default()
+        set_predictor(predictor)
+        print(f"   model loaded: {predictor.model_version}")
+    except FileNotFoundError as e:
+        print(f"   ⚠ no trained model on disk ({e}); /predict will fail")
+    yield
     print("👋 Shutting down")
 
 
 app = FastAPI(
     title=settings.app_name,
-    version="0.1.0",
+    version="0.2.0",
     lifespan=lifespan,
 )
 
-# CORS: lets the React frontend (different port) call this API.
-# Without this, the browser blocks the request as cross-origin.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -42,8 +48,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# All API routes live under /api/. Health check becomes /api/health.
 app.include_router(routes_health.router, prefix="/api")
+app.include_router(routes_games.router, prefix="/api")
+app.include_router(routes_predict.router, prefix="/api")
+app.include_router(routes_models.router, prefix="/api")
 
 
 @app.get("/")
