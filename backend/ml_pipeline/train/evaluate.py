@@ -1,15 +1,17 @@
-"""Evaluate trained models on the validation set.
+"""Evaluate trained models on the validation or test set.
 
-Reads both logreg.joblib and rf.joblib, computes:
+Reads logreg.joblib, rf.joblib, and the PyTorch MLP. Computes:
   - overall accuracy, log loss, Brier score, ROC AUC
   - accuracy by time-remaining bucket (the most interesting metric)
   - calibration buckets (does "80% home" actually win 80% of the time?)
 
 Run with:
-    python -m ml_pipeline.train.evaluate
+    python -m ml_pipeline.train.evaluate              # defaults to val
+    python -m ml_pipeline.train.evaluate --split test # held-out test set
 """
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 import joblib
@@ -26,7 +28,7 @@ console = Console()
 ARTIFACTS_DIR = Path(__file__).resolve().parents[1] / "artifacts"
 
 
-def evaluate_model(name: str, model, X: np.ndarray, y: np.ndarray, df_val: pd.DataFrame) -> dict:
+def evaluate_model(name: str, model, X: np.ndarray, y: np.ndarray, df_eval: pd.DataFrame) -> dict:
     """Compute headline metrics + bucketed accuracy for one model."""
     probs = model.predict_proba(X)[:, 1]
     preds = (probs >= 0.5).astype(int)
@@ -39,14 +41,11 @@ def evaluate_model(name: str, model, X: np.ndarray, y: np.ndarray, df_val: pd.Da
         "roc_auc": float(roc_auc_score(y, probs)),
     }
 
-    # Accuracy by minutes-remaining bucket.
-    # This is what tells you the model is actually working: accuracy should
-    # climb from ~55% at game start to >95% in the final minute.
-    df_eval = df_val.copy()
-    df_eval["prob"] = probs
-    df_eval["pred"] = preds
-    df_eval["correct"] = preds == y
-    df_eval["minutes_remaining"] = df_eval["seconds_remaining_game"] // 60
+    df = df_eval.copy()
+    df["prob"] = probs
+    df["pred"] = preds
+    df["correct"] = preds == y
+    df["minutes_remaining"] = df["seconds_remaining_game"] // 60
 
     buckets = [
         (0, 1, "final minute"),
@@ -58,10 +57,10 @@ def evaluate_model(name: str, model, X: np.ndarray, y: np.ndarray, df_val: pd.Da
     ]
     bucket_metrics = []
     for lo, hi, label in buckets:
-        mask = (df_eval["minutes_remaining"] >= lo) & (df_eval["minutes_remaining"] < hi)
+        mask = (df["minutes_remaining"] >= lo) & (df["minutes_remaining"] < hi)
         if mask.sum() == 0:
             continue
-        sub = df_eval[mask]
+        sub = df[mask]
         bucket_metrics.append({
             "bucket": label,
             "n": int(mask.sum()),
@@ -69,23 +68,9 @@ def evaluate_model(name: str, model, X: np.ndarray, y: np.ndarray, df_val: pd.Da
         })
     metrics["by_time_bucket"] = bucket_metrics
 
-    # Calibration: split predictions into 10 deciles, see how often each
-    # decile's predictions actually came true.
-    df_eval["prob_decile"] = pd.cut(df_eval["prob"], bins=10, labels=False)
-    cal = df_eval.groupby("prob_decile").agg(
-        mean_predicted=("prob", "mean"),
-        mean_actual=("correct", "mean"),  # not quite right, but proxy
-        n=("prob", "size"),
-    )
-    # The right calibration metric: in each decile, what was the actual home-win rate?
-    cal_actual = df_eval.groupby("prob_decile")["pred"].count()
-    cal_pred_mean = df_eval.groupby("prob_decile")["prob"].mean()
-    cal_actual_rate = df_eval.groupby("prob_decile").apply(
-        lambda g: g["prob"].notna().mean()  # placeholder; real one below
-    )
-    # Correct calibration: mean predicted vs mean actual outcome per decile.
-    df_eval["y_true"] = y
-    real_cal = df_eval.groupby("prob_decile").agg(
+    df["prob_decile"] = pd.cut(df["prob"], bins=10, labels=False)
+    df["y_true"] = y
+    real_cal = df.groupby("prob_decile").agg(
         mean_pred=("prob", "mean"),
         mean_actual=("y_true", "mean"),
         n=("prob", "size"),
@@ -95,8 +80,8 @@ def evaluate_model(name: str, model, X: np.ndarray, y: np.ndarray, df_val: pd.Da
     return metrics
 
 
-def print_summary(all_metrics: list[dict]) -> None:
-    table = Table(title="Model comparison on validation set")
+def print_summary(all_metrics: list[dict], split_name: str) -> None:
+    table = Table(title=f"Model comparison on {split_name} set")
     table.add_column("Model")
     table.add_column("Accuracy", justify="right")
     table.add_column("Log Loss", justify="right")
@@ -112,8 +97,7 @@ def print_summary(all_metrics: list[dict]) -> None:
         )
     console.print(table)
 
-    # Accuracy by time bucket — the killer chart.
-    console.print("\n[bold]Accuracy by time remaining:[/bold]")
+    console.print(f"\n[bold]Accuracy by time remaining ({split_name}):[/bold]")
     bucket_table = Table()
     bucket_table.add_column("Time bucket")
     for m in all_metrics:
@@ -127,14 +111,13 @@ def print_summary(all_metrics: list[dict]) -> None:
         bucket_table.add_row(*row)
     console.print(bucket_table)
 
-    # Calibration summary
-    console.print("\n[bold]Calibration (logreg):[/bold]")
-    logreg_cal = next(m for m in all_metrics if m["model"] == "logreg")["calibration"]
+    console.print(f"\n[bold]Calibration (nn, {split_name}):[/bold]")
+    nn_cal = next(m for m in all_metrics if m["model"] == "nn")["calibration"]
     cal_table = Table()
     cal_table.add_column("Predicted P(home)")
     cal_table.add_column("Actual rate")
     cal_table.add_column("N")
-    for row in logreg_cal:
+    for row in nn_cal:
         cal_table.add_row(
             f"{row['mean_pred']:.3f}",
             f"{row['mean_actual']:.3f}",
@@ -144,18 +127,25 @@ def print_summary(all_metrics: list[dict]) -> None:
 
 
 def main() -> None:
-    console.print("[bold cyan]Loading val set + models...[/bold cyan]")
-    df = pd.read_parquet(PROCESSED_DIR / "features.parquet")
-    val = df[df["split"] == "val"].copy()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--split",
+        choices=["val", "test"],
+        default="val",
+        help="Which split to evaluate on. Defaults to val.",
+    )
+    args = parser.parse_args()
 
-    X_val = val[FEATURE_COLUMNS].values
-    y_val = val["home_won"].values.astype(int)
+    console.print(f"[bold cyan]Loading {args.split} set + models...[/bold cyan]")
+    df = pd.read_parquet(PROCESSED_DIR / "features.parquet")
+    eval_df = df[df["split"] == args.split].copy()
+
+    X = eval_df[FEATURE_COLUMNS].values
+    y = eval_df["home_won"].values.astype(int)
 
     logreg = joblib.load(ARTIFACTS_DIR / "logreg.joblib")
     rf = joblib.load(ARTIFACTS_DIR / "rf.joblib")
 
-    # The PyTorch model needs the feature scaler applied separately,
-    # and it returns torch tensors. Wrap it in a sklearn-like interface.
     import torch
     from app.ml.model import load_checkpoint
 
@@ -169,19 +159,18 @@ def main() -> None:
             with torch.no_grad():
                 logits = nn_model(torch.tensor(X_scaled, dtype=torch.float32))
                 probs = torch.sigmoid(logits).numpy()
-            # Match sklearn's predict_proba shape: (n, 2) with [P(0), P(1)]
             return np.column_stack([1 - probs, probs])
 
     nn_wrapper = NNWrapper()
 
-    console.print(f"  val: {len(val):,} rows · {val['game_id'].nunique():,} games\n")
+    console.print(f"  {args.split}: {len(eval_df):,} rows · {eval_df['game_id'].nunique():,} games\n")
 
     all_metrics = [
-        evaluate_model("logreg", logreg, X_val, y_val, val),
-        evaluate_model("rf", rf, X_val, y_val, val),
-        evaluate_model("nn", nn_wrapper, X_val, y_val, val),
+        evaluate_model("logreg", logreg, X, y, eval_df),
+        evaluate_model("rf", rf, X, y, eval_df),
+        evaluate_model("nn", nn_wrapper, X, y, eval_df),
     ]
-    print_summary(all_metrics)
+    print_summary(all_metrics, args.split)
 
 
 if __name__ == "__main__":
