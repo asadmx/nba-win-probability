@@ -1,0 +1,79 @@
+{
+  "model": "mlp",
+  "val_log_loss": 0.48646028661969926,
+  "val_accuracy": 0.7374052333742633,
+  "n_parameters": 3201,
+  "hyperparameters": {
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "max_epochs": 30,
+    "patience": 5,
+    "dropout": 0.2,
+    "hidden_1": 64,
+    "hidden_2": 32
+  },
+  "feature_columns": [
+    "score_margin",
+    "seconds_remaining_game",
+    "seconds_remaining_period",
+    "period",
+    "is_overtime",
+    "is_clutch",
+    "home_has_possession",
+    "home_fouls_period",
+    "away_fouls_period",
+    "home_in_bonus",
+    "away_in_bonus",
+    "momentum_5",
+    "recent_scoring_run",
+    "margin_x_logtime",
+    "margin_per_second_remaining",
+    "abs_margin"
+  ],
+  "n_train": 481885,
+  "n_val": 341233,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.4944554700319274,
+      "val_loss": 0.48714537412506653,
+      "val_acc": 0.7369597899382533
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.4804317101394784,
+      "val_loss": 0.48646028661969926,
+      "val_acc": 0.7374052333742633
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.4787216448532906,
+      "val_loss": 0.486905153711292,
+      "val_acc": 0.736382471800793
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.47781816146308365,
+      "val_loss": 0.4876717295853413,
+      "val_acc": 0.7370389147591235
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.47709003485060403,
+      "val_loss": 0.48674688802629323,
+      "val_acc": 0.7377656908915609
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.47676546584665935,
+      "val_loss": 0.4868984450823356,
+      "val_acc": 0.7370330536612812
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.4758537847548221,
+      "val_loss": 0.4882146251449213,
+      "val_acc": 0.7367575820626961
+    }
+  ]
+}
