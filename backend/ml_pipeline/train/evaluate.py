@@ -154,11 +154,32 @@ def main() -> None:
     logreg = joblib.load(ARTIFACTS_DIR / "logreg.joblib")
     rf = joblib.load(ARTIFACTS_DIR / "rf.joblib")
 
+    # The PyTorch model needs the feature scaler applied separately,
+    # and it returns torch tensors. Wrap it in a sklearn-like interface.
+    import torch
+    from app.ml.model import load_checkpoint
+
+    nn_scaler = joblib.load(ARTIFACTS_DIR / "nn_scaler.joblib")
+    nn_model = load_checkpoint(ARTIFACTS_DIR / "nn_model.pt", n_features=len(FEATURE_COLUMNS))
+
+    class NNWrapper:
+        """sklearn-compatible interface so evaluate_model() works unchanged."""
+        def predict_proba(self, X: np.ndarray) -> np.ndarray:
+            X_scaled = nn_scaler.transform(X)
+            with torch.no_grad():
+                logits = nn_model(torch.tensor(X_scaled, dtype=torch.float32))
+                probs = torch.sigmoid(logits).numpy()
+            # Match sklearn's predict_proba shape: (n, 2) with [P(0), P(1)]
+            return np.column_stack([1 - probs, probs])
+
+    nn_wrapper = NNWrapper()
+
     console.print(f"  val: {len(val):,} rows · {val['game_id'].nunique():,} games\n")
 
     all_metrics = [
         evaluate_model("logreg", logreg, X_val, y_val, val),
         evaluate_model("rf", rf, X_val, y_val, val),
+        evaluate_model("nn", nn_wrapper, X_val, y_val, val),
     ]
     print_summary(all_metrics)
 
