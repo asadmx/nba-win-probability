@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import routes_games, routes_health, routes_models, routes_predict
+from app.websockets import simulator as ws_simulator
 from app.config import settings
 from app.ml.predictor import Predictor, set_predictor
 
@@ -52,6 +53,7 @@ app.include_router(routes_health.router, prefix="/api")
 app.include_router(routes_games.router, prefix="/api")
 app.include_router(routes_predict.router, prefix="/api")
 app.include_router(routes_models.router, prefix="/api")
+app.include_router(ws_simulator.router)  # WebSocket — no /api prefix
 
 
 @app.get("/")
