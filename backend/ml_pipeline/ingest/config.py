@@ -15,8 +15,7 @@ DB_PATH = DATA_DIR / "nba.db"
 
 # Seasons to ingest. NBA seasons are named by the year they start; "2023-24"
 # means the season that began in October 2023 and ended in June 2024.
-SEASONS = ["2023-24", "2024-25"]
-
+SEASONS = ["2023-24", "2024-25", "2025-26"]
 # Game type. We only care about regular-season + playoff games.
 SEASON_TYPES = ["Regular Season", "Playoffs"]
 

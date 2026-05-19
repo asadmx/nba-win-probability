@@ -18,7 +18,7 @@ router = APIRouter(prefix="/games", tags=["games"])
 @router.get("", response_model=GamesListResponse)
 def list_games(
     season: str | None = Query(None, description="Filter by season, e.g. '2024-25'"),
-    limit: int = Query(50, ge=1, le=500),
+    limit: int = Query(50, ge=1, le=2000),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
 ) -> GamesListResponse:
