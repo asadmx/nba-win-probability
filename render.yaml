@@ -1,0 +1,23 @@
+# Render.com infrastructure config.
+# This file is auto-detected when you connect the repo to Render.
+# Changes here trigger a redeploy.
+
+services:
+  - type: web
+    name: nba-win-probability-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        # Set this in the Render dashboard once Vercel gives you a URL.
+        sync: false
+    disk:
+      name: data
+      mountPath: /app/data
+      sizeGB: 1
