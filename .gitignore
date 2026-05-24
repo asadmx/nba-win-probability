@@ -18,9 +18,9 @@ dist/
 backend/data/raw/
 backend/data/processed/
 backend/data/*.db
-backend/ml_pipeline/artifacts/*.pt
-backend/ml_pipeline/artifacts/*.pkl
-backend/ml_pipeline/artifacts/*.joblib
+!backend/data/nba.db
+backend/ml_pipeline/artifacts/rf.joblib
+# Keep small ones for deploy: nn_model.pt (30KB), nn_scaler.joblib (2KB), logreg.joblib (2KB)
 
 # IDE
 .vscode/
