@@ -1,5 +1,4 @@
-import type { GameSummary, GamesListResponse } from "../types";
-
+import type { GameSummary, GamesListResponse, TodayResponse } from "../types";
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 class ApiError extends Error {
@@ -38,4 +37,13 @@ export function wsUrlForGame(gameId: number, speed = 10): string {
   // Replace http(s):// with ws(s)://
   const wsBase = API_BASE.replace(/^http/, "ws");
   return `${wsBase}/ws/game/${gameId}?speed=${speed}`;
+}
+
+export async function getTodayGames(): Promise<TodayResponse> {
+  return get<TodayResponse>("/api/live/today");
+}
+
+export function wsUrlForLiveGame(gameId: string): string {
+  const wsBase = API_BASE.replace(/^http/, "ws");
+  return `${wsBase}/ws/live/${gameId}`;
 }

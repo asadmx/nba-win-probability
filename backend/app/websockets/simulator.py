@@ -1,13 +1,4 @@
-"""Live-game simulator + WebSocket route handler.
-
-Walks through a historical game's plays in chronological order, sleeping
-between plays so it feels like watching a live game. After each play it
-calls the parser + predictor and broadcasts the updated state to all
-subscribers of that game.
-
-The same logic works for a real live feed if you replace the SQLite read
-with a stream of incoming events.
-"""
+"""Live-game simulator + WebSocket route handler with pause/resume support."""
 from __future__ import annotations
 
 import asyncio
@@ -25,15 +16,10 @@ from app.websockets.manager import manager
 
 router = APIRouter(tags=["websocket"])
 
-# How long (real seconds) we sleep between consecutive plays at speed=1.
-# Real NBA games average ~2-3 plays per minute of game time but plays
-# happen in bursts. We sleep ~0.5s per play at speed=1 to feel natural,
-# then divide by `speed` for fast-forward demos.
 BASE_DELAY_SECONDS = 0.5
 
 
 def _row_to_play(p: Play) -> _Play:
-    """SQLAlchemy Play → parser-friendly _Play."""
     return _Play(
         action_number=p.action_number,
         period=p.period,
@@ -50,13 +36,6 @@ def _row_to_play(p: Play) -> _Play:
 
 
 def _features_from_state(state) -> dict[str, Any]:
-    """Convert a GameState dataclass into the dict the predictor expects.
-
-    The predictor wants engineered features. The parser produces a subset.
-    This function fills in the engineered fields the same way
-    ml_pipeline/features/build_features.py does — keeping training and
-    serving in lockstep.
-    """
     import math
     margin = state.score_margin
     sec_rem = state.seconds_remaining_game
@@ -82,14 +61,19 @@ def _features_from_state(state) -> dict[str, Any]:
     }
 
 
-async def _stream_game(game_id: int, speed: float) -> None:
-    """Replay a game in the background, broadcasting ticks as we go.
+class SimulatorState:
+    def __init__(self, speed: float):
+        self.speed = speed
+        self.paused = False
+        self.done = False
 
-    Runs until the simulator finishes or all subscribers disconnect.
-    """
+
+_simulator_states: dict[int, SimulatorState] = {}
+_running_simulators: dict[int, asyncio.Task] = {}
+
+
+async def _stream_game(game_id: int, sim_state: SimulatorState) -> None:
     predictor = get_predictor()
-
-    # Open a DB session just for this simulator task.
     db: Session = SessionLocal()
     try:
         game = db.get(Game, game_id)
@@ -100,7 +84,6 @@ async def _stream_game(game_id: int, speed: float) -> None:
             })
             return
 
-        # Send the connection-established message with game metadata.
         await manager.broadcast(game_id, {
             "type": "connected",
             "game_id": game_id,
@@ -128,12 +111,14 @@ async def _stream_game(game_id: int, speed: float) -> None:
             home_won=game.home_won,
         )
 
-        delay = BASE_DELAY_SECONDS / max(speed, 0.1)
-
         for play_row in plays:
-            # If everyone has disconnected, stop the simulator entirely.
             if manager.subscriber_count(game_id) == 0:
                 return
+
+            while sim_state.paused:
+                await asyncio.sleep(0.1)
+                if manager.subscriber_count(game_id) == 0:
+                    return
 
             play = _row_to_play(play_row)
             state = parser.consume(play)
@@ -166,59 +151,60 @@ async def _stream_game(game_id: int, speed: float) -> None:
                 "model_version": predictor.model_version,
             })
 
+            delay = BASE_DELAY_SECONDS / max(sim_state.speed, 0.1)
             await asyncio.sleep(delay)
 
-        # End of game.
         await manager.broadcast(game_id, {
             "type": "game_end",
             "final_score": {"home": game.home_pts, "away": game.away_pts},
             "home_won": game.home_won,
         })
     finally:
+        sim_state.done = True
         db.close()
 
 
-# Per-game background task tracking. We only want one simulator running
-# per game at a time, even if multiple clients connect.
-_running_simulators: dict[int, asyncio.Task] = {}
-
-
-def _ensure_simulator(game_id: int, speed: float) -> None:
-    """Start a simulator task for this game if one isn't already running."""
+def _ensure_simulator(game_id: int, speed: float) -> SimulatorState:
     task = _running_simulators.get(game_id)
     if task is not None and not task.done():
-        return
-    task = asyncio.create_task(_stream_game(game_id, speed))
+        return _simulator_states[game_id]
+
+    sim_state = SimulatorState(speed=speed)
+    _simulator_states[game_id] = sim_state
+    task = asyncio.create_task(_stream_game(game_id, sim_state))
     _running_simulators[game_id] = task
 
     def _cleanup(_t: asyncio.Task) -> None:
-        # Clean up our tracking dict when the task finishes.
         if _running_simulators.get(game_id) is _t:
             _running_simulators.pop(game_id, None)
+            _simulator_states.pop(game_id, None)
 
     task.add_done_callback(_cleanup)
+    return sim_state
 
 
 @router.websocket("/ws/game/{game_id}")
 async def websocket_game(
     websocket: WebSocket,
     game_id: int,
-    speed: float = Query(1.0, ge=0.1, le=100.0,
-                         description="Playback speed multiplier"),
+    speed: float = Query(10.0, ge=0.1, le=100.0),
 ) -> None:
-    """Client subscribes to a game's live tick stream.
-
-    Connect:  ws://localhost:8000/ws/game/22301195?speed=10
-    Receives: a stream of JSON messages (see the protocol in the docstring).
-    """
     await manager.connect(game_id, websocket)
-    _ensure_simulator(game_id, speed)
+    sim_state = _ensure_simulator(game_id, speed)
 
     try:
-        # Keep the connection alive. We don't expect inbound messages from
-        # the client in v1, but receive_text blocks until disconnect, which
-        # is exactly what we want.
         while True:
-            await websocket.receive_text()
+            data = await websocket.receive_json()
+            action = data.get("action")
+            if action == "pause":
+                sim_state.paused = True
+                await websocket.send_json({"type": "paused"})
+            elif action == "resume":
+                sim_state.paused = False
+                await websocket.send_json({"type": "resumed"})
+            elif action == "set_speed":
+                new_speed = float(data.get("speed", sim_state.speed))
+                sim_state.speed = max(0.1, min(100.0, new_speed))
+                await websocket.send_json({"type": "speed_set", "speed": sim_state.speed})
     except WebSocketDisconnect:
         manager.disconnect(game_id, websocket)

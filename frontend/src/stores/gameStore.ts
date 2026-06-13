@@ -1,34 +1,44 @@
 import { create } from "zustand";
-import type { GameSummary, WSTick } from "../types";
+import type { GameSummary, LiveGame, WSTick } from "../types";
 
 export type ConnectionStatus = "idle" | "connecting" | "connected" | "ended" | "error";
 
 interface GameState {
   selectedGameId: number | null;
   selectedGame: GameSummary | null;
+  liveGameId: string | null;
   connectionStatus: ConnectionStatus;
-
-  // Ticks accumulate as the simulator streams. We keep them in chronological
-  // order for the chart and play feed.
+  isPaused: boolean;
   ticks: WSTick[];
-
-  // Convenience accessors derived from the latest tick.
   currentScore: { home: number; away: number };
   currentPeriod: number;
-  currentClock: number; // seconds remaining in period
+  currentClock: number;
   currentProbability: number;
 
-  // Actions
   selectGame: (game: GameSummary) => void;
+  selectLiveGame: (game: LiveGame) => void;
   resetTicks: () => void;
   appendTick: (tick: WSTick) => void;
   setStatus: (s: ConnectionStatus) => void;
+  setIsPaused: (v: boolean) => void;
 }
+
+const RESET = {
+  ticks: [] as WSTick[],
+  isPaused: false,
+  currentScore: { home: 0, away: 0 },
+  currentPeriod: 1,
+  currentClock: 720,
+  currentProbability: 0.5,
+  connectionStatus: "connecting" as ConnectionStatus,
+};
 
 export const useGameStore = create<GameState>((set) => ({
   selectedGameId: null,
   selectedGame: null,
+  liveGameId: null,
   connectionStatus: "idle",
+  isPaused: false,
   ticks: [],
   currentScore: { home: 0, away: 0 },
   currentPeriod: 1,
@@ -36,25 +46,12 @@ export const useGameStore = create<GameState>((set) => ({
   currentProbability: 0.5,
 
   selectGame: (game) =>
-    set({
-      selectedGameId: game.game_id,
-      selectedGame: game,
-      ticks: [],
-      currentScore: { home: 0, away: 0 },
-      currentPeriod: 1,
-      currentClock: 720,
-      currentProbability: 0.5,
-      connectionStatus: "connecting",
-    }),
+    set({ selectedGameId: game.game_id, selectedGame: game, liveGameId: null, ...RESET }),
 
-  resetTicks: () =>
-    set({
-      ticks: [],
-      currentScore: { home: 0, away: 0 },
-      currentPeriod: 1,
-      currentClock: 720,
-      currentProbability: 0.5,
-    }),
+  selectLiveGame: (game) =>
+    set({ liveGameId: game.game_id, selectedGameId: null, selectedGame: null, ...RESET }),
+
+  resetTicks: () => set({ ticks: [], currentScore: { home: 0, away: 0 }, currentPeriod: 1, currentClock: 720, currentProbability: 0.5 }),
 
   appendTick: (tick) =>
     set((s) => ({
@@ -66,4 +63,5 @@ export const useGameStore = create<GameState>((set) => ({
     })),
 
   setStatus: (s) => set({ connectionStatus: s }),
+  setIsPaused: (v) => set({ isPaused: v }),
 }));

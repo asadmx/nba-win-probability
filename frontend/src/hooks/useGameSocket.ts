@@ -1,48 +1,54 @@
 import { useEffect, useRef } from "react";
-import { wsUrlForGame } from "../lib/api";
+import { wsUrlForGame, wsUrlForLiveGame } from "../lib/api";
 import { useGameStore } from "../stores/gameStore";
 import type { WSMessage } from "../types";
 
-/**
- * Opens a WebSocket to the simulator for the currently selected game.
- *
- * Lifecycle:
- *   - When `selectedGameId` changes, close the previous socket and open a new one.
- *   - Tick messages are pushed into the Zustand store.
- *   - On game_end, status flips to "ended" but ticks remain visible.
- *   - On unmount, close cleanly.
- */
+let _wsSend: ((msg: object) => void) | null = null;
+
+export function sendToSimulator(msg: object): void {
+  _wsSend?.(msg);
+}
+
 export function useGameSocket(speed = 10): void {
   const selectedGameId = useGameStore((s) => s.selectedGameId);
+  const liveGameId = useGameStore((s) => s.liveGameId);
   const appendTick = useGameStore((s) => s.appendTick);
   const setStatus = useGameStore((s) => s.setStatus);
+  const setIsPaused = useGameStore((s) => s.setIsPaused);
 
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    if (selectedGameId == null) return;
+    const gameId = selectedGameId ?? liveGameId;
+    if (gameId == null) return;
 
     wsRef.current?.close();
 
-    const url = wsUrlForGame(selectedGameId, speed);
+    const url = liveGameId
+      ? wsUrlForLiveGame(liveGameId)
+      : wsUrlForGame(selectedGameId!, speed);
+
     const ws = new WebSocket(url);
     wsRef.current = ws;
 
-    setStatus("connecting");
-
-    ws.onopen = () => {
-      setStatus("connected");
+    _wsSend = (msg: object) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(msg));
+      }
     };
+
+    setStatus("connecting");
+    ws.onopen = () => setStatus("connected");
 
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data) as WSMessage;
-        if (msg.type === "tick") {
-          appendTick(msg);
-        } else if (msg.type === "game_end") {
-          setStatus("ended");
-        } else if (msg.type === "error") {
-          console.error("WS error message:", msg.message);
+        if (msg.type === "tick") appendTick(msg);
+        else if (msg.type === "game_end") setStatus("ended");
+        else if (msg.type === "paused") setIsPaused(true);
+        else if (msg.type === "resumed") setIsPaused(false);
+        else if (msg.type === "error") {
+          console.error("WS error:", msg.message);
           setStatus("error");
         }
       } catch (e) {
@@ -50,20 +56,16 @@ export function useGameSocket(speed = 10): void {
       }
     };
 
-    ws.onerror = (e) => {
-      console.error("WS error:", e);
-      setStatus("error");
-    };
+    ws.onerror = () => setStatus("error");
 
     ws.onclose = () => {
-      const currentStatus = useGameStore.getState().connectionStatus;
-      if (currentStatus === "connected" || currentStatus === "connecting") {
-        setStatus("ended");
-      }
+      const current = useGameStore.getState().connectionStatus;
+      if (current === "connected" || current === "connecting") setStatus("ended");
     };
 
     return () => {
+      _wsSend = null;
       ws.close();
     };
-  }, [selectedGameId, speed, appendTick, setStatus]);
+  }, [selectedGameId, liveGameId, speed, appendTick, setStatus, setIsPaused]);
 }
