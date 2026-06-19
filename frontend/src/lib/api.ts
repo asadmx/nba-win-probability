@@ -1,4 +1,4 @@
-import type { GameSummary, GamesListResponse, TodayResponse } from "../types";
+import type { GameSummary, GamesListResponse, TodayResponse, RecapResponse } from "../types";
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 class ApiError extends Error {
@@ -46,4 +46,8 @@ export async function getTodayGames(): Promise<TodayResponse> {
 export function wsUrlForLiveGame(gameId: string): string {
   const wsBase = API_BASE.replace(/^http/, "ws");
   return `${wsBase}/ws/live/${gameId}`;
+}
+
+export async function getSeasonRecap(season: string): Promise<RecapResponse> {
+  return get<RecapResponse>(`/api/recap/${season}`);
 }

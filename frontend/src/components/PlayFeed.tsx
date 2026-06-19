@@ -18,15 +18,17 @@ function periodLabel(period: number): string {
  */
 export function PlayFeed() {
   const ticks = useGameStore((s) => s.ticks);
+  const game = useGameStore((s) => s.selectedGame);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // We display newest at top, so a "newer" tick means scroll to top.
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, [ticks.length]);
 
-  // Reverse so newest is rendered first (top).
   const displayed = [...ticks].reverse().slice(0, 100);
+
+  const awayAbbr = game?.away_team_abbr ?? "AWAY";
+  const homeAbbr = game?.home_team_abbr ?? "HOME";
 
   return (
     <div className="border border-[#1F2230] bg-[#15171F] flex flex-col h-full">
@@ -51,8 +53,9 @@ export function PlayFeed() {
                 <div className="font-mono text-xs text-text-secondary tabular-nums shrink-0 w-16">
                   {periodLabel(t.play.period)} {formatClock(t.play.clock_seconds)}
                 </div>
-                <div className="font-mono text-xs tabular-nums shrink-0 w-16">
-                  {t.play.score_home}-{t.play.score_away}
+                <div className="font-mono text-xs tabular-nums shrink-0 w-20">
+                  <div className="text-text-secondary">{awayAbbr} {t.play.score_away}</div>
+                  <div className="text-text-secondary">{homeAbbr} {t.play.score_home}</div>
                 </div>
                 <div className="text-sm flex-1 leading-snug">
                   {t.play.description ?? t.play.action_type}

@@ -1,7 +1,7 @@
 """FastAPI application entrypoint.
 
 Wires together:
-  - Health, games, predict, models routes
+  - Health, games, predict, models, live, recap routes
   - The PyTorch predictor (loaded once at startup, reused per request)
   - CORS for the React frontend
 """
@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import routes_games, routes_health, routes_models, routes_predict, routes_live
+from app.api import routes_games, routes_health, routes_models, routes_predict, routes_live, routes_recap, routes_trivia
 from app.websockets import simulator as ws_simulator
 from app.websockets import live_simulator as ws_live
 from app.config import settings
@@ -57,6 +57,8 @@ app.include_router(routes_models.router, prefix="/api")
 app.include_router(ws_simulator.router)  # WebSocket — no /api prefix
 app.include_router(routes_live.router, prefix="/api")
 app.include_router(ws_live.router)
+app.include_router(routes_recap.router, prefix="/api")
+app.include_router(routes_trivia.router, prefix="/api")
 
 
 @app.get("/")

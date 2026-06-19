@@ -14,6 +14,7 @@ interface GameState {
   currentPeriod: number;
   currentClock: number;
   currentProbability: number;
+  recapTarget: number | null;
 
   selectGame: (game: GameSummary) => void;
   selectLiveGame: (game: LiveGame) => void;
@@ -21,6 +22,7 @@ interface GameState {
   appendTick: (tick: WSTick) => void;
   setStatus: (s: ConnectionStatus) => void;
   setIsPaused: (v: boolean) => void;
+  setRecapTarget: (gameId: number | null) => void;
 }
 
 const RESET = {
@@ -44,6 +46,7 @@ export const useGameStore = create<GameState>((set) => ({
   currentPeriod: 1,
   currentClock: 720,
   currentProbability: 0.5,
+  recapTarget: null,
 
   selectGame: (game) =>
     set({ selectedGameId: game.game_id, selectedGame: game, liveGameId: null, ...RESET }),
@@ -64,4 +67,5 @@ export const useGameStore = create<GameState>((set) => ({
 
   setStatus: (s) => set({ connectionStatus: s }),
   setIsPaused: (v) => set({ isPaused: v }),
+  setRecapTarget: (gameId) => set({ recapTarget: gameId }),
 }));

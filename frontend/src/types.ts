@@ -102,3 +102,32 @@ export interface TodayResponse {
   games: LiveGame[];
   game_date: string;
 }
+
+export interface RecapSwingPlay {
+  period: number;
+  clock_seconds: number;
+  description: string | null;
+  score_home: number;
+  score_away: number;
+}
+
+export interface RecapGame {
+  game_id: number;
+  game_date: string;
+  home_team_abbr: string;
+  away_team_abbr: string;
+  home_pts: number;
+  away_pts: number;
+  home_won: boolean;
+  biggest_swing_pct: number;
+  swing_play: RecapSwingPlay;
+  prob_after_swing: number;
+  volatility_score: number;
+  n_big_swings: number;
+}
+
+export interface RecapResponse {
+  season: string;
+  biggest_swings: RecapGame[];
+  most_volatile: RecapGame[];
+}

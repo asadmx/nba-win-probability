@@ -1,0 +1,807 @@
+{
+  "season": "2025-26",
+  "biggest_swings": [
+    {
+      "game_id": 22500167,
+      "game_date": "2025-11-04",
+      "home_team_abbr": "CHI",
+      "away_team_abbr": "PHI",
+      "home_pts": 113,
+      "away_pts": 111,
+      "home_won": true,
+      "biggest_swing_pct": 84.2,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 3.2,
+        "description": "Vucevic 24' 3PT Jump Shot (19 PTS) (Giddey 12 AST)",
+        "score_home": 113,
+        "score_away": 111
+      },
+      "prob_after_swing": 99.0,
+      "volatility_score": 351.0,
+      "n_big_swings": 82
+    },
+    {
+      "game_id": 22500372,
+      "game_date": "2025-12-18",
+      "home_team_abbr": "IND",
+      "away_team_abbr": "NYK",
+      "home_pts": 113,
+      "away_pts": 114,
+      "home_won": false,
+      "biggest_swing_pct": 80.6,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 5.6,
+        "description": "Brunson 27' 3PT Step Back Jump Shot (25 PTS)",
+        "score_home": 113,
+        "score_away": 114
+      },
+      "prob_after_swing": 10.1,
+      "volatility_score": 811.8,
+      "n_big_swings": 134
+    },
+    {
+      "game_id": 22501225,
+      "game_date": "2025-12-15",
+      "home_team_abbr": "DEN",
+      "away_team_abbr": "HOU",
+      "home_pts": 128,
+      "away_pts": 125,
+      "home_won": true,
+      "biggest_swing_pct": 77.7,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 2.3,
+        "description": "Sengun 2' Driving Hook Shot (28 PTS)",
+        "score_home": 116,
+        "score_away": 117
+      },
+      "prob_after_swing": 5.1,
+      "volatility_score": 1232.8,
+      "n_big_swings": 173
+    },
+    {
+      "game_id": 22501013,
+      "game_date": "2026-03-19",
+      "home_team_abbr": "SAS",
+      "away_team_abbr": "PHX",
+      "home_pts": 101,
+      "away_pts": 100,
+      "home_won": true,
+      "biggest_swing_pct": 75.3,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 1.1,
+        "description": "Wembanyama 17' Pullup Jump Shot (34 PTS)",
+        "score_home": 101,
+        "score_away": 100
+      },
+      "prob_after_swing": 98.7,
+      "volatility_score": 786.8,
+      "n_big_swings": 152
+    },
+    {
+      "game_id": 22500964,
+      "game_date": "2026-03-13",
+      "home_team_abbr": "HOU",
+      "away_team_abbr": "NOP",
+      "home_pts": 107,
+      "away_pts": 105,
+      "home_won": true,
+      "biggest_swing_pct": 69.0,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 7.6,
+        "description": "Durant 18' Pullup Jump Shot (30 PTS) (Smith Jr. 3 AST)",
+        "score_home": 105,
+        "score_away": 104
+      },
+      "prob_after_swing": 84.6,
+      "volatility_score": 744.2,
+      "n_big_swings": 126
+    },
+    {
+      "game_id": 22500481,
+      "game_date": "2026-01-02",
+      "home_team_abbr": "MIL",
+      "away_team_abbr": "CHA",
+      "home_pts": 122,
+      "away_pts": 121,
+      "home_won": true,
+      "biggest_swing_pct": 67.4,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 10.5,
+        "description": "Kuzma 27' 3PT Jump Shot (18 PTS) (Rollins 8 AST)",
+        "score_home": 120,
+        "score_away": 118
+      },
+      "prob_after_swing": 92.6,
+      "volatility_score": 1098.0,
+      "n_big_swings": 161
+    },
+    {
+      "game_id": 22500200,
+      "game_date": "2025-11-10",
+      "home_team_abbr": "ORL",
+      "away_team_abbr": "POR",
+      "home_pts": 115,
+      "away_pts": 112,
+      "home_won": true,
+      "biggest_swing_pct": 66.5,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 10.6,
+        "description": "Grant 2' Alley Oop Layup (16 PTS) (Camara 3 AST)",
+        "score_home": 110,
+        "score_away": 111
+      },
+      "prob_after_swing": 14.5,
+      "volatility_score": 802.3,
+      "n_big_swings": 135
+    },
+    {
+      "game_id": 22500587,
+      "game_date": "2026-01-16",
+      "home_team_abbr": "BKN",
+      "away_team_abbr": "CHI",
+      "home_pts": 112,
+      "away_pts": 109,
+      "home_won": true,
+      "biggest_swing_pct": 65.7,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 5.4,
+        "description": "Porter Jr. 1' Driving Layup (26 PTS) (Traore 7 AST)",
+        "score_home": 110,
+        "score_away": 109
+      },
+      "prob_after_swing": 86.8,
+      "volatility_score": 537.0,
+      "n_big_swings": 90
+    },
+    {
+      "game_id": 42500136,
+      "game_date": "2026-05-01",
+      "home_team_abbr": "TOR",
+      "away_team_abbr": "CLE",
+      "home_pts": 112,
+      "away_pts": 110,
+      "home_won": true,
+      "biggest_swing_pct": 65.1,
+      "swing_play": {
+        "period": 5,
+        "clock_seconds": 1.2,
+        "description": "Barrett 29' 3PT Jump Shot (24 PTS) (Barnes 14 AST)",
+        "score_home": 112,
+        "score_away": 110
+      },
+      "prob_after_swing": 99.8,
+      "volatility_score": 794.4,
+      "n_big_swings": 122
+    },
+    {
+      "game_id": 22500137,
+      "game_date": "2025-10-29",
+      "home_team_abbr": "PHX",
+      "away_team_abbr": "MEM",
+      "home_pts": 113,
+      "away_pts": 114,
+      "home_won": false,
+      "biggest_swing_pct": 64.3,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 7.6,
+        "description": "Morant 11' Driving Floating Jump Shot (28 PTS) (Aldama 5 AST)",
+        "score_home": 113,
+        "score_away": 114
+      },
+      "prob_after_swing": 12.0,
+      "volatility_score": 873.7,
+      "n_big_swings": 152
+    },
+    {
+      "game_id": 22500291,
+      "game_date": "2025-11-24",
+      "home_team_abbr": "GSW",
+      "away_team_abbr": "UTA",
+      "home_pts": 134,
+      "away_pts": 117,
+      "home_won": true,
+      "biggest_swing_pct": 64.3,
+      "swing_play": {
+        "period": 1,
+        "clock_seconds": 206.0,
+        "description": "MISS Jackson-Davis 2' Putback Layup",
+        "score_home": 134,
+        "score_away": 117
+      },
+      "prob_after_swing": 94.4,
+      "volatility_score": 429.2,
+      "n_big_swings": 79
+    },
+    {
+      "game_id": 22500053,
+      "game_date": "2025-11-21",
+      "home_team_abbr": "PHX",
+      "away_team_abbr": "MIN",
+      "home_pts": 114,
+      "away_pts": 113,
+      "home_won": true,
+      "biggest_swing_pct": 63.6,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 6.4,
+        "description": "Gillespie 10' Driving Floating Jump Shot (20 PTS)",
+        "score_home": 114,
+        "score_away": 113
+      },
+      "prob_after_swing": 90.9,
+      "volatility_score": 886.0,
+      "n_big_swings": 150
+    },
+    {
+      "game_id": 22500430,
+      "game_date": "2025-12-26",
+      "home_team_abbr": "UTA",
+      "away_team_abbr": "DET",
+      "home_pts": 131,
+      "away_pts": 129,
+      "home_won": true,
+      "biggest_swing_pct": 62.3,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 2.1,
+        "description": "George 8' Driving Floating Jump Shot (31 PTS)",
+        "score_home": 131,
+        "score_away": 129
+      },
+      "prob_after_swing": 99.7,
+      "volatility_score": 823.1,
+      "n_big_swings": 153
+    },
+    {
+      "game_id": 22500102,
+      "game_date": "2025-10-25",
+      "home_team_abbr": "PHI",
+      "away_team_abbr": "CHA",
+      "home_pts": 125,
+      "away_pts": 121,
+      "home_won": true,
+      "biggest_swing_pct": 59.0,
+      "swing_play": {
+        "period": 3,
+        "clock_seconds": 245.0,
+        "description": "Edwards Transition Take Foul (P1.PN) (J.Tiven)",
+        "score_home": 125,
+        "score_away": 121
+      },
+      "prob_after_swing": 75.2,
+      "volatility_score": 1011.3,
+      "n_big_swings": 163
+    },
+    {
+      "game_id": 22500458,
+      "game_date": "2025-12-30",
+      "home_team_abbr": "MEM",
+      "away_team_abbr": "PHI",
+      "home_pts": 136,
+      "away_pts": 139,
+      "home_won": false,
+      "biggest_swing_pct": 56.7,
+      "swing_play": {
+        "period": 5,
+        "clock_seconds": 2.2,
+        "description": "Edgecombe 25' 3PT Jump Shot (25 PTS) (Maxey 12 AST)",
+        "score_home": 136,
+        "score_away": 139
+      },
+      "prob_after_swing": 0.2,
+      "volatility_score": 982.7,
+      "n_big_swings": 172
+    },
+    {
+      "game_id": 22500507,
+      "game_date": "2026-01-05",
+      "home_team_abbr": "PHI",
+      "away_team_abbr": "DEN",
+      "home_pts": 124,
+      "away_pts": 125,
+      "home_won": false,
+      "biggest_swing_pct": 56.2,
+      "swing_play": {
+        "period": 5,
+        "clock_seconds": 5.3,
+        "description": "Brown 1' Running Layup (19 PTS)",
+        "score_home": 124,
+        "score_away": 125
+      },
+      "prob_after_swing": 20.4,
+      "volatility_score": 988.7,
+      "n_big_swings": 151
+    },
+    {
+      "game_id": 22501228,
+      "game_date": "2025-12-14",
+      "home_team_abbr": "PHX",
+      "away_team_abbr": "LAL",
+      "home_pts": 114,
+      "away_pts": 116,
+      "home_won": false,
+      "biggest_swing_pct": 55.3,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 12.2,
+        "description": "Brooks 27' 3PT Jump Shot (18 PTS) (Booker 7 AST)",
+        "score_home": 114,
+        "score_away": 113
+      },
+      "prob_after_swing": 86.5,
+      "volatility_score": 696.2,
+      "n_big_swings": 123
+    },
+    {
+      "game_id": 22500366,
+      "game_date": "2025-12-08",
+      "home_team_abbr": "NOP",
+      "away_team_abbr": "SAS",
+      "home_pts": 132,
+      "away_pts": 135,
+      "home_won": false,
+      "biggest_swing_pct": 54.7,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 9.1,
+        "description": "Harper 2' Driving Layup (22 PTS)",
+        "score_home": 132,
+        "score_away": 133
+      },
+      "prob_after_swing": 13.6,
+      "volatility_score": 752.9,
+      "n_big_swings": 132
+    },
+    {
+      "game_id": 22500063,
+      "game_date": "2025-11-26",
+      "home_team_abbr": "TOR",
+      "away_team_abbr": "IND",
+      "home_pts": 97,
+      "away_pts": 95,
+      "home_won": true,
+      "biggest_swing_pct": 54.3,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 0.6,
+        "description": "Ingram 15' Pullup Jump Shot (26 PTS)",
+        "score_home": 97,
+        "score_away": 95
+      },
+      "prob_after_swing": 100.0,
+      "volatility_score": 766.6,
+      "n_big_swings": 141
+    },
+    {
+      "game_id": 22500393,
+      "game_date": "2025-12-20",
+      "home_team_abbr": "UTA",
+      "away_team_abbr": "ORL",
+      "home_pts": 127,
+      "away_pts": 128,
+      "home_won": false,
+      "biggest_swing_pct": 54.2,
+      "swing_play": {
+        "period": 5,
+        "clock_seconds": 4.1,
+        "description": "George 25' 3PT Step Back Jump Shot (26 PTS)",
+        "score_home": 126,
+        "score_away": 126
+      },
+      "prob_after_swing": 63.2,
+      "volatility_score": 805.5,
+      "n_big_swings": 139
+    }
+  ],
+  "most_volatile": [
+    {
+      "game_id": 22500240,
+      "game_date": "2025-11-16",
+      "home_team_abbr": "UTA",
+      "away_team_abbr": "CHI",
+      "home_pts": 150,
+      "away_pts": 147,
+      "home_won": true,
+      "biggest_swing_pct": 31.8,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 48.3,
+        "description": "Markkanen 20' Jump Shot (42 PTS) (Collier 7 AST)",
+        "score_home": 126,
+        "score_away": 125
+      },
+      "prob_after_swing": 54.1,
+      "volatility_score": 1328.1,
+      "n_big_swings": 208
+    },
+    {
+      "game_id": 22500001,
+      "game_date": "2025-10-21",
+      "home_team_abbr": "OKC",
+      "away_team_abbr": "HOU",
+      "home_pts": 125,
+      "away_pts": 124,
+      "home_won": true,
+      "biggest_swing_pct": 36.3,
+      "swing_play": {
+        "period": 6,
+        "clock_seconds": 11.0,
+        "description": "Sengun 2' Driving Finger Roll Layup (39 PTS) (Durant 3 AST)",
+        "score_home": 123,
+        "score_away": 124
+      },
+      "prob_after_swing": 45.7,
+      "volatility_score": 1307.5,
+      "n_big_swings": 191
+    },
+    {
+      "game_id": 22500005,
+      "game_date": "2025-10-23",
+      "home_team_abbr": "IND",
+      "away_team_abbr": "OKC",
+      "home_pts": 135,
+      "away_pts": 141,
+      "home_won": false,
+      "biggest_swing_pct": 45.4,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 6.8,
+        "description": "Siakam 22' Pullup Jump Shot (27 PTS)",
+        "score_home": 113,
+        "score_away": 113
+      },
+      "prob_after_swing": 54.3,
+      "volatility_score": 1296.7,
+      "n_big_swings": 206
+    },
+    {
+      "game_id": 22501225,
+      "game_date": "2025-12-15",
+      "home_team_abbr": "DEN",
+      "away_team_abbr": "HOU",
+      "home_pts": 128,
+      "away_pts": 125,
+      "home_won": true,
+      "biggest_swing_pct": 77.7,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 2.3,
+        "description": "Sengun 2' Driving Hook Shot (28 PTS)",
+        "score_home": 116,
+        "score_away": 117
+      },
+      "prob_after_swing": 5.1,
+      "volatility_score": 1232.8,
+      "n_big_swings": 173
+    },
+    {
+      "game_id": 22500093,
+      "game_date": "2025-10-24",
+      "home_team_abbr": "HOU",
+      "away_team_abbr": "DET",
+      "home_pts": 111,
+      "away_pts": 115,
+      "home_won": false,
+      "biggest_swing_pct": 25.5,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 397.0,
+        "description": "Jenkins 26' 3PT Pullup Jump Shot (5 PTS) (Thompson 3 AST)",
+        "score_home": 99,
+        "score_away": 101
+      },
+      "prob_after_swing": 33.2,
+      "volatility_score": 1209.3,
+      "n_big_swings": 207
+    },
+    {
+      "game_id": 22500201,
+      "game_date": "2025-11-10",
+      "home_team_abbr": "MIA",
+      "away_team_abbr": "CLE",
+      "home_pts": 140,
+      "away_pts": 138,
+      "home_won": true,
+      "biggest_swing_pct": 42.2,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 34.3,
+        "description": "Mobley 27' 3PT Jump Shot (19 PTS) (Hunter 4 AST)",
+        "score_home": 126,
+        "score_away": 127
+      },
+      "prob_after_swing": 25.8,
+      "volatility_score": 1142.3,
+      "n_big_swings": 161
+    },
+    {
+      "game_id": 22500858,
+      "game_date": "2026-02-27",
+      "home_team_abbr": "DET",
+      "away_team_abbr": "CLE",
+      "home_pts": 122,
+      "away_pts": 119,
+      "home_won": true,
+      "biggest_swing_pct": 33.2,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 13.1,
+        "description": "Duren Putback Dunk (29 PTS)",
+        "score_home": 111,
+        "score_away": 112
+      },
+      "prob_after_swing": 44.0,
+      "volatility_score": 1138.4,
+      "n_big_swings": 181
+    },
+    {
+      "game_id": 22500043,
+      "game_date": "2025-11-14",
+      "home_team_abbr": "MIL",
+      "away_team_abbr": "CHA",
+      "home_pts": 147,
+      "away_pts": 134,
+      "home_won": true,
+      "biggest_swing_pct": 46.1,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 21.1,
+        "description": "Knueppel 26' 3PT Jump Shot (32 PTS)",
+        "score_home": 129,
+        "score_away": 129
+      },
+      "prob_after_swing": 43.7,
+      "volatility_score": 1129.4,
+      "n_big_swings": 178
+    },
+    {
+      "game_id": 22500550,
+      "game_date": "2026-01-11",
+      "home_team_abbr": "TOR",
+      "away_team_abbr": "PHI",
+      "home_pts": 116,
+      "away_pts": 115,
+      "home_won": true,
+      "biggest_swing_pct": 34.5,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 20.1,
+        "description": "Maxey 29' 3PT Step Back Jump Shot (35 PTS)",
+        "score_home": 103,
+        "score_away": 107
+      },
+      "prob_after_swing": 7.7,
+      "volatility_score": 1110.2,
+      "n_big_swings": 164
+    },
+    {
+      "game_id": 22500623,
+      "game_date": "2026-01-21",
+      "home_team_abbr": "MEM",
+      "away_team_abbr": "ATL",
+      "home_pts": 122,
+      "away_pts": 124,
+      "home_won": false,
+      "biggest_swing_pct": 29.9,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 7.9,
+        "description": "MISS Johnson 14' Step Back Jump Shot",
+        "score_home": 122,
+        "score_away": 124
+      },
+      "prob_after_swing": 8.3,
+      "volatility_score": 1103.5,
+      "n_big_swings": 176
+    },
+    {
+      "game_id": 22500481,
+      "game_date": "2026-01-02",
+      "home_team_abbr": "MIL",
+      "away_team_abbr": "CHA",
+      "home_pts": 122,
+      "away_pts": 121,
+      "home_won": true,
+      "biggest_swing_pct": 67.4,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 10.5,
+        "description": "Kuzma 27' 3PT Jump Shot (18 PTS) (Rollins 8 AST)",
+        "score_home": 120,
+        "score_away": 118
+      },
+      "prob_after_swing": 92.6,
+      "volatility_score": 1098.0,
+      "n_big_swings": 161
+    },
+    {
+      "game_id": 22500726,
+      "game_date": "2026-02-04",
+      "home_team_abbr": "NYK",
+      "away_team_abbr": "DEN",
+      "home_pts": 134,
+      "away_pts": 127,
+      "home_won": true,
+      "biggest_swing_pct": 33.5,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 13.5,
+        "description": "Murray 14' Pullup Jump Shot (34 PTS)",
+        "score_home": 108,
+        "score_away": 108
+      },
+      "prob_after_swing": 51.3,
+      "volatility_score": 1087.4,
+      "n_big_swings": 168
+    },
+    {
+      "game_id": 22500771,
+      "game_date": "2026-02-10",
+      "home_team_abbr": "NYK",
+      "away_team_abbr": "IND",
+      "home_pts": 134,
+      "away_pts": 137,
+      "home_won": false,
+      "biggest_swing_pct": 22.3,
+      "swing_play": {
+        "period": 5,
+        "clock_seconds": 93.0,
+        "description": "Jackson 26' 3PT Jump Shot (17 PTS) (Siakam 4 AST)",
+        "score_home": 124,
+        "score_away": 131
+      },
+      "prob_after_swing": 8.7,
+      "volatility_score": 1086.4,
+      "n_big_swings": 165
+    },
+    {
+      "game_id": 22500637,
+      "game_date": "2026-01-23",
+      "home_team_abbr": "BKN",
+      "away_team_abbr": "BOS",
+      "home_pts": 126,
+      "away_pts": 130,
+      "home_won": false,
+      "biggest_swing_pct": 27.3,
+      "swing_play": {
+        "period": 6,
+        "clock_seconds": 44.2,
+        "description": "Pritchard 1' Driving Layup (32 PTS) (Brown 12 AST)",
+        "score_home": 126,
+        "score_away": 130
+      },
+      "prob_after_swing": 20.0,
+      "volatility_score": 1080.0,
+      "n_big_swings": 170
+    },
+    {
+      "game_id": 42500311,
+      "game_date": "2026-05-18",
+      "home_team_abbr": "OKC",
+      "away_team_abbr": "SAS",
+      "home_pts": 115,
+      "away_pts": 122,
+      "home_won": false,
+      "biggest_swing_pct": 42.8,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 11.5,
+        "description": "Wembanyama 4' Turnaround Jump Shot (27 PTS)",
+        "score_home": 99,
+        "score_away": 101
+      },
+      "prob_after_swing": 8.9,
+      "volatility_score": 1076.1,
+      "n_big_swings": 166
+    },
+    {
+      "game_id": 22500974,
+      "game_date": "2026-03-14",
+      "home_team_abbr": "LAL",
+      "away_team_abbr": "DEN",
+      "home_pts": 127,
+      "away_pts": 125,
+      "home_won": true,
+      "biggest_swing_pct": 41.7,
+      "swing_play": {
+        "period": 5,
+        "clock_seconds": 0.5,
+        "description": "Doncic 18' Step Back Jump Shot (30 PTS)",
+        "score_home": 127,
+        "score_away": 125
+      },
+      "prob_after_swing": 100.0,
+      "volatility_score": 1073.8,
+      "n_big_swings": 154
+    },
+    {
+      "game_id": 22500731,
+      "game_date": "2026-02-04",
+      "home_team_abbr": "SAC",
+      "away_team_abbr": "MEM",
+      "home_pts": 125,
+      "away_pts": 129,
+      "home_won": false,
+      "biggest_swing_pct": 37.8,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 18.1,
+        "description": "Spencer 28' 3PT Pullup Jump Shot (20 PTS)",
+        "score_home": 125,
+        "score_away": 129
+      },
+      "prob_after_swing": 6.9,
+      "volatility_score": 1070.5,
+      "n_big_swings": 169
+    },
+    {
+      "game_id": 22500238,
+      "game_date": "2025-11-16",
+      "home_team_abbr": "DAL",
+      "away_team_abbr": "POR",
+      "home_pts": 138,
+      "away_pts": 133,
+      "home_won": true,
+      "biggest_swing_pct": 24.3,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 71.0,
+        "description": "Flagg 10' Driving Floating Jump Shot (16 PTS)",
+        "score_home": 117,
+        "score_away": 117
+      },
+      "prob_after_swing": 46.8,
+      "volatility_score": 1067.1,
+      "n_big_swings": 196
+    },
+    {
+      "game_id": 22501050,
+      "game_date": "2026-03-24",
+      "home_team_abbr": "PHX",
+      "away_team_abbr": "DEN",
+      "home_pts": 123,
+      "away_pts": 125,
+      "home_won": false,
+      "biggest_swing_pct": 49.2,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 11.8,
+        "description": "Jokic 12' Floating Jump Shot (23 PTS) (Murray 6 AST)",
+        "score_home": 123,
+        "score_away": 125
+      },
+      "prob_after_swing": 28.1,
+      "volatility_score": 1052.1,
+      "n_big_swings": 186
+    },
+    {
+      "game_id": 22500933,
+      "game_date": "2026-03-09",
+      "home_team_abbr": "OKC",
+      "away_team_abbr": "DEN",
+      "home_pts": 129,
+      "away_pts": 126,
+      "home_won": true,
+      "biggest_swing_pct": 33.2,
+      "swing_play": {
+        "period": 4,
+        "clock_seconds": 13.9,
+        "description": "Gilgeous-Alexander 25' 3PT Pullup Jump Shot (32 PTS)",
+        "score_home": 126,
+        "score_away": 122
+      },
+      "prob_after_swing": 96.2,
+      "volatility_score": 1031.6,
+      "n_big_swings": 155
+    }
+  ]
+}
